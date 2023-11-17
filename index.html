@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SSE Example</title>
+</head>
+<body>
+
+<div id="sse-data"></div>
+
+<script>
+  const eventSource = new EventSource('http://localhost:3000/start-background-task');
+
+  eventSource.onmessage = (event) => {
+    const dataDiv = document.getElementById('sse-data');
+    dataDiv.innerHTML += `<p>${event.data}</p>`;
+  };
+
+  eventSource.onerror = (error) => {
+
+    console.error('EventSource failed:', error);
+    const dataDiv = document.getElementById('sse-data');
+    dataDiv.innerHTML += `<p>${error.data}</p>`;
+    eventSource.close();
+
+  };
+</script>
+
+</body>
+</html>
